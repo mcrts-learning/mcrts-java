@@ -8,8 +8,57 @@ public class Decharge {
        /*******************************************
          * Completez le programme a partir d'ici.
          *******************************************/
-	
+	public static double calculerDistance(int x1, int y1, int x2, int y2) {
+		double distance = Math.sqrt(Math.pow((x1 - x2), 2) + Math.pow((y1 - y2), 2));
+		return distance;
+	}	
 
+	public static int plusProche(int x, int y, int[] coordonneesHabitations) {
+		double distanceMin = Integer.MAX_VALUE;
+		int idMin = 0;
+		for (int i = 0; i < coordonneesHabitations.length / 2; i ++ ) {
+			int xI = coordonneesHabitations[i*2];
+			int yI = coordonneesHabitations[i*2 + 1];
+			double distance = calculerDistance(x, y, xI, yI);
+			if (distance < distanceMin) {
+				distanceMin = distance;
+				idMin = i;
+			}
+		}
+		return idMin;
+	}
+
+	public static int[] troisPlusProches(int x, int y, int[] coordonneesHabitations) {
+		int[] habitations = new int[6];
+		int[] tmp = new int[coordonneesHabitations.length];
+		System.arraycopy(coordonneesHabitations, 0, tmp, 0, coordonneesHabitations.length);
+		int index = plusProche(x, y, tmp);
+		habitations[0] = coordonneesHabitations[index*2];
+		habitations[1] = coordonneesHabitations[index*2 + 1];
+		tmp[index*2] = 1000000;
+		tmp[index*2 + 1] = 1000000;
+
+		index = plusProche(x, y, tmp);
+		habitations[2] = coordonneesHabitations[index*2];
+		habitations[3] = coordonneesHabitations[index*2 + 1];
+		tmp[index*2] = 1000000;
+		tmp[index*2 + 1] = 1000000;
+
+		index = plusProche(x, y, tmp);
+		habitations[4] = coordonneesHabitations[index*2];
+		habitations[5] = coordonneesHabitations[index*2 + 1];
+		tmp[index*2] = 1000000;
+		tmp[index*2 + 1] = 1000000;
+		return habitations;
+	}
+
+	public static int[] meilleurePlace(int x, int y, int[] coordonneesHabitations) {
+		int[] triangle = troisPlusProches(x, y, coordonneesHabitations);
+		int cx = ((triangle[0] + triangle[2] + triangle[4]) / 3);
+		int cy = ((triangle[1] + triangle[3] + triangle[5]) / 3);
+		int[] position = new int[] {cx, cy};
+		return position;
+	}
         /*******************************************
          * Ne rien modifier apres cette ligne.
          *******************************************/
