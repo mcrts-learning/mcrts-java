@@ -60,7 +60,7 @@ class Exemplaire {
     public Exemplaire(Exemplaire e)
     {
         oeuvre = e.oeuvre;
-        System.out.print("Copie d’un exemplaire de -> ");
+        System.out.print("Copie d'un exemplaire de -> ");
         System.out.println(oeuvre);
     }
 
