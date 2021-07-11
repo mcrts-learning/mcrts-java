@@ -34,7 +34,7 @@ class Oeuvre
     }
     public Oeuvre(String t, final Auteur a)
     {
-        this(t, a, "français");
+        this(t, a, "francais");
     }
 
     public String getTitre() { return titre; }
