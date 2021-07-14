@@ -65,7 +65,7 @@ class Composee extends Piece {
             if (i == this.pieces.size() - 1) {
                 str += ")";
             } else {
-                str += ", ";
+                str += ",";
             }
         }
         return str;

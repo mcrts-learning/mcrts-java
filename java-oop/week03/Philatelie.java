@@ -66,23 +66,24 @@ class Timbre {
 class Rare extends Timbre {
     private int nombreExemplaires;
 
-    public Rare() {
+    public Rare(int nombreExemplaires) {
         super();
+        this.nombreExemplaires = nombreExemplaires;
     }
-    public Rare(String code) {
+    public Rare(String code, int nombreExemplaires) {
         super(code);
+        this.nombreExemplaires = nombreExemplaires;
     }
-    public Rare(String code, int year) {
+    public Rare(String code, int year, int nombreExemplaires) {
         super(code, year);
+        this.nombreExemplaires = nombreExemplaires;
     }
-    public Rare(String code, int year, String pays) {
+    public Rare(String code, int year, String pays, int nombreExemplaires) {
         super(code, year, pays);
-    }
-    public Rare(String code, int year, String pays, double valeur) {
-        super(code, year, pays, valeur);
+        this.nombreExemplaires = nombreExemplaires;
     }
     public Rare(String code, int year, String pays, double valeur, int nombreExemplaires) {
-        this(code, year, pays, valeur);
+        super(code, year, pays, valeur);
         this.nombreExemplaires = nombreExemplaires;
     }
 
