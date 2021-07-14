@@ -44,7 +44,7 @@ class Timbre {
     public String getCode() { return this.code; }
     public int getAnnee() { return this.year; }
     public String getPays() { return this.pays; }
-    public double getValeurFacialeCode() { return this.valeur; }
+    public double getValeurFaciale() { return this.valeur; }
     public int age() { return ANNEE_COURANTE - this.getAnnee(); }
     
     public double vente() {
