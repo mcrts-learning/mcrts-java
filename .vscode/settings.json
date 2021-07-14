@@ -1,10 +1,11 @@
 {
     "java.project.sourcePaths": [
-        "java-oop/week01",
-        "java-oop/week02",
         "java-init/week06",
         "java-init/week04",
         "java-init/week03",
+        "java-oop/week01",
+        "java-oop/week02",
+        "java-oop/week03",
         ""
     ]
 }
