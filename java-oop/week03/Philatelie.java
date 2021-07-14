@@ -46,7 +46,7 @@ class Timbre {
     public String getPays() { return this.pays; }
     public double getValeurFaciale() { return this.valeur; }
     public int age() { return ANNEE_COURANTE - this.getAnnee(); }
-    
+
     public double vente() {
         if (this.age() < 5) {
             return this.valeur;
@@ -56,9 +56,10 @@ class Timbre {
     }
     public String toString() {
         String str = String.format(
-            "Timbre de code %s datant de %d (provenance %s) ayant pour valeur faciale %.1f francs",
-            this.code, this.year, this.pays, this.valeur
+            "Timbre de code %s datant de  %d (provenance %s) ayant pour valeur faciale ",
+            this.code, this.year, this.pays
         );
+        str += this.valeur + " francs";
         return str;
     }
 }
@@ -90,8 +91,8 @@ class Rare extends Timbre {
     public int getExemplaires() { return this.nombreExemplaires; }
     public String toString() {
         String str = super.toString();
-        str += "\n";
-        str += String.format("Nombre d’exemplaires -> %d", this.nombreExemplaires);
+        str += System.lineSeparator();
+        str += "Nombre d’exemplaires -> " + this.nombreExemplaires;
         return str;
     }
     public double vente() {
@@ -126,13 +127,13 @@ class Commemoratif extends Timbre {
 
     public String toString() {
         String str = super.toString();
-        str += "\n";
+        str += System.lineSeparator();
         str += "Timbre celebrant un evenement";
         return str;
     }
     public double vente() { return 2 * super.vente(); }
 }
-	
+
 /*******************************************
  * Ne rien modifier apres cette ligne.
  *******************************************/
