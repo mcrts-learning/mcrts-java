@@ -16,6 +16,120 @@ class Timbre {
     /*******************************************
      * Completez le programme a partir d'ici.
      *******************************************/
+    private String code = CODE_DEFAUT;
+    private int year = ANNEE_COURANTE;
+    private String pays = PAYS_DEFAUT;
+    private double valeur = VALEUR_TIMBRE_DEFAUT;
+
+    public Timbre() {}
+    public Timbre(String code) {
+        this.code = code;
+    }
+    public Timbre(String code, int year) {
+        this.code = code;
+        this.year = year;
+    }
+    public Timbre(String code, int year, String pays) {
+        this.code = code;
+        this.year = year;
+        this.pays = pays;
+    }
+    public Timbre(String code, int year, String pays, double valeur) {
+        this.code = code;
+        this.year = year;
+        this.pays = pays;
+        this.valeur = valeur;
+    }
+
+    public String getCode() { return this.code; }
+    public int getAnnee() { return this.year; }
+    public String getPays() { return this.pays; }
+    public double getValeurFacialeCode() { return this.valeur; }
+    public int age() { return ANNEE_COURANTE - this.getAnnee(); }
+    
+    public double vente() {
+        if (this.age() < 5) {
+            return this.valeur;
+        } else {
+            return this.age() * 2.5 * this.valeur;
+        }
+    }
+    public String toString() {
+        String str = String.format(
+            "Timbre de code %s datant de %d (provenance %s) ayant pour valeur faciale %.1f francs",
+            this.code, this.year, this.pays, this.valeur
+        );
+        return str;
+    }
+}
+
+class Rare extends Timbre {
+    private int nombreExemplaires;
+
+    public Rare() {
+        super();
+    }
+    public Rare(String code) {
+        super(code);
+    }
+    public Rare(String code, int year) {
+        super(code, year);
+    }
+    public Rare(String code, int year, String pays) {
+        super(code, year, pays);
+    }
+    public Rare(String code, int year, String pays, double valeur) {
+        super(code, year, pays, valeur);
+    }
+    public Rare(String code, int year, String pays, double valeur, int nombreExemplaires) {
+        this(code, year, pays, valeur);
+        this.nombreExemplaires = nombreExemplaires;
+    }
+
+    public int getExemplaires() { return this.nombreExemplaires; }
+    public String toString() {
+        String str = super.toString();
+        str += "\n";
+        str += String.format("Nombre d’exemplaires -> %d", this.nombreExemplaires);
+        return str;
+    }
+    public double vente() {
+        double basePrice;
+        if (this.getExemplaires() < 100) {
+            basePrice = PRIX_BASE_1;
+        } else if (this.getExemplaires() < 1000) {
+            basePrice = PRIX_BASE_2;
+        } else {
+            basePrice = PRIX_BASE_3;
+        }
+        return basePrice * (this.age() / 10.0);
+    }
+}
+
+class Commemoratif extends Timbre {
+    public Commemoratif() {
+        super();
+    }
+    public Commemoratif(String code) {
+        super(code);
+    }
+    public Commemoratif(String code, int year) {
+        super(code, year);
+    }
+    public Commemoratif(String code, int year, String pays) {
+        super(code, year, pays);
+    }
+    public Commemoratif(String code, int year, String pays, double valeur) {
+        super(code, year, pays, valeur);
+    }
+
+    public String toString() {
+        String str = super.toString();
+        str += "\n";
+        str += "Timbre celebrant un evenement";
+        return str;
+    }
+    public double vente() { return 2 * super.vente(); }
 }
 	
 /*******************************************
