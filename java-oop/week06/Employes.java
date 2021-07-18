@@ -27,7 +27,7 @@ class Employe {
         this.nom = nom;
         this.salaire = salaire;
         this.taux = taux;
-        System.out.print("Nous avons un nouvel employé : ");
+        System.out.format("Nous avons un nouvel employé : %s, ", nom);
     }
     public Employe(String nom, double salaire) {
         this(nom, salaire, 100);
@@ -35,10 +35,9 @@ class Employe {
 
     public double revenuAnnuel() { return (12 * this.salaire * this.taux / 100) + this.prime; }
     public String toString() {
-        String str = "";
-        str += this.nom;
+        String str = String.format("%s :", this.nom);
         str += System.lineSeparator();
-        str += String.format("  Taux d’occupation : %d%s. Salaire annuel : %.2f francs", this.taux, '%', this.revenuAnnuel());
+        str += String.format("  Taux d'occupation : %d%s. Salaire annuel : %.2f francs", this.taux, '%', this.revenuAnnuel());
         if (this.prime > 0) {
             str += String.format(", Prime : %.2f.", this.prime);
         } else {
@@ -82,8 +81,8 @@ class Employe {
 }
 
 class Manager extends Employe {
-    public static final double FACTEUR_GAIN_CLIENT = 500;
-    public static final double FACTEUR_GAIN_VOYAGE = 100;
+    public static final int FACTEUR_GAIN_CLIENT = 500;
+    public static final int FACTEUR_GAIN_VOYAGE = 100;
 
     private int nbJourVoyage;
     private int nbClient;
@@ -92,7 +91,7 @@ class Manager extends Employe {
         super(nom, salaire, taux);
         this.nbJourVoyage = nbJourVoyage;
         this.nbClient = nbClient;
-        System.out.println(nom + ", c’est un manager.");
+        System.out.println("c'est un manager.");
     }
 
     public Manager(String nom, double salaire, int nbJourVoyage, int nbClient) {
@@ -115,14 +114,14 @@ class Manager extends Employe {
 }
 
 class Testeur extends Employe {
-    public static final double FACTEUR_GAIN_ERREURS = 10;
+    public static final int FACTEUR_GAIN_ERREURS = 10;
 
     private int nbErreur;
 
     public Testeur(String nom, double salaire, int nbErreur, int taux) {
         super(nom, salaire, taux);
         this.nbErreur = nbErreur;
-        System.out.println(nom + ", c’est un testeur.");
+        System.out.println("c'est un testeur.");
     }
 
     public Testeur(String nom, double salaire, int nbErreur) {
@@ -144,14 +143,14 @@ class Testeur extends Employe {
 }
 
 class Programmeur extends Employe {
-    public static final double FACTEUR_GAIN_PROJETS = 200;
+    public static final int FACTEUR_GAIN_PROJETS = 200;
 
     private int nbProjet;
 
     public Programmeur(String nom, double salaire, int nbProjet, int taux) {
         super(nom, salaire, taux);
         this.nbProjet = nbProjet;
-        System.out.println(nom + ", c’est un programmeur.");
+        System.out.println("c'est un programmeur.");
     }
 
     public Programmeur(String nom, double salaire, int nbProjet) {
