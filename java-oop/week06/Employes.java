@@ -1,12 +1,179 @@
 /*******************************************
  * Completez le programme a partir d'ici.
  *******************************************/
-"Nous avons un nouvel employé : "
+import java.util.ArrayList;
+import java.util.InputMismatchException;
+import java.util.List;
+import java.util.Scanner;
+
+class NumberTooHigh extends Exception {
+	public NumberTooHigh(String msg) {
+	    super(msg);
+	}
+}
+
+class Employe {
+    private final String nom;
+    private double salaire;
+    private int taux;
+    private double prime = 0;
+
+    public Employe(String nom, double salaire, int taux) {
+        if (taux < 10) {
+            taux = 10;
+        } else if (taux > 100) {
+            taux = 100;
+        }
+        this.nom = nom;
+        this.salaire = salaire;
+        this.taux = taux;
+        System.out.print("Nous avons un nouvel employé : ");
+    }
+    public Employe(String nom, double salaire) {
+        this(nom, salaire, 100);
+    }
+
+    public double revenuAnnuel() { return (12 * this.salaire * this.taux / 100) + this.prime; }
+    public String toString() {
+        String str = "";
+        str += this.nom;
+        str += System.lineSeparator();
+        str += String.format("  Taux d’occupation : %d%s. Salaire annuel : %.2f francs", this.taux, '%', this.revenuAnnuel());
+        if (this.prime > 0) {
+            str += String.format(", Prime : %.2f.", this.prime);
+        } else {
+            str += "."; 
+        }
+        str += System.lineSeparator();
+        return str;
+    }
+
+    private double askBonus(Scanner clavier) throws InputMismatchException, NumberTooHigh {
+        double primeMax = this.revenuAnnuel() * 2 / 100;
+        System.out.format("Montant de la prime souhaitée par %s ? ", this.nom);
+        System.out.println();
+        prime = clavier.nextDouble();
+        if (prime > primeMax) {
+            throw new NumberTooHigh("Prime demandé supérieur à " + primeMax);
+        }
+        return prime;
+    }
+
+    public void demandePrime() {
+        Scanner clavier = new Scanner(System.in);
+        double prime = -1;
+        for (int i = 0; i < 5; i++) {
+            try { 
+                prime = askBonus(clavier);
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println("Vous devez introduire un nombre!");
+            } catch (NumberTooHigh e) {
+                System.out.println("Trop cher!");
+            } finally {
+                clavier.nextLine();
+            }
+        }
+        if (prime > 0) {
+            this.prime = prime;
+        }
+        clavier.close();
+    }
+}
+
+class Manager extends Employe {
+    public static final double FACTEUR_GAIN_CLIENT = 500;
+    public static final double FACTEUR_GAIN_VOYAGE = 100;
+
+    private int nbJourVoyage;
+    private int nbClient;
+
+    public Manager(String nom, double salaire, int nbJourVoyage, int nbClient, int taux) {
+        super(nom, salaire, taux);
+        this.nbJourVoyage = nbJourVoyage;
+        this.nbClient = nbClient;
+        System.out.println(nom + ", c’est un manager.");
+    }
+
+    public Manager(String nom, double salaire, int nbJourVoyage, int nbClient) {
+        this(nom, salaire, nbJourVoyage, nbClient, 100);
+    }
+
+    public double revenuAnnuel() {
+        double revenu = super.revenuAnnuel();
+        revenu += this.nbClient * FACTEUR_GAIN_CLIENT;
+        revenu += this.nbJourVoyage * FACTEUR_GAIN_VOYAGE;
+        return revenu;
+    }
+
+    public String toString() {
+        String str = super.toString();
+        str += String.format("  A voyagé %d jours et apporté %d nouveaux clients.", this.nbJourVoyage, this.nbClient);
+        str += System.lineSeparator();
+        return str;
+    }
+}
+
+class Testeur extends Employe {
+    public static final double FACTEUR_GAIN_ERREURS = 10;
+
+    private int nbErreur;
+
+    public Testeur(String nom, double salaire, int nbErreur, int taux) {
+        super(nom, salaire, taux);
+        this.nbErreur = nbErreur;
+        System.out.println(nom + ", c’est un testeur.");
+    }
+
+    public Testeur(String nom, double salaire, int nbErreur) {
+        this(nom, salaire, nbErreur, 100);
+    }
+
+    public double revenuAnnuel() {
+        double revenu = super.revenuAnnuel();
+        revenu += this.nbErreur * FACTEUR_GAIN_ERREURS;
+        return revenu;
+    }
+
+    public String toString() {
+        String str = super.toString();
+        str += String.format("  A corrigé %d erreurs.", this.nbErreur);
+        str += System.lineSeparator();
+        return str;
+    }
+}
+
+class Programmeur extends Employe {
+    public static final double FACTEUR_GAIN_PROJETS = 200;
+
+    private int nbProjet;
+
+    public Programmeur(String nom, double salaire, int nbProjet, int taux) {
+        super(nom, salaire, taux);
+        this.nbProjet = nbProjet;
+        System.out.println(nom + ", c’est un programmeur.");
+    }
+
+    public Programmeur(String nom, double salaire, int nbProjet) {
+        this(nom, salaire, nbProjet, 100);
+    }
+
+    public double revenuAnnuel() {
+        double revenu = super.revenuAnnuel();
+        revenu += this.nbProjet * FACTEUR_GAIN_PROJETS;
+        return revenu;
+    }
+
+    public String toString() {
+        String str = super.toString();
+        str += String.format("  A mené à bien %d projets", this.nbProjet);
+        str += System.lineSeparator();
+        return str;
+    }
+}
+/*
 "Montant de la prime souhaitée par "
-"  A voyagé "
-" jours et apporté "
-"  A corrigé "
-"  A mené à bien "
+*/
 
 /*******************************************
  * Ne rien modifier apres cette ligne.
