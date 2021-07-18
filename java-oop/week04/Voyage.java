@@ -1,7 +1,102 @@
 /*******************************************
  * Completez le programme a partir d'ici.
  *******************************************/
-+ " à "
+import java.util.ArrayList;
+
+class OptionVoyage {
+    private String nom;
+    private double prixForfaitaire;
+
+    public OptionVoyage(String nom, double prixForfaitaire) {
+        this.nom = nom;
+        this.prixForfaitaire = prixForfaitaire;
+    }
+
+    public String getNom() { return nom; }
+    public double prix() { return prixForfaitaire; }
+    public String toString() {
+        String str = this.getNom() + " ->  " + this.prix() + " CHF";
+        return str;
+    }
+}
+
+class Transport extends OptionVoyage {
+    public static final double TARIF_LONG = 1500;
+    public static final double TARIF_BASE = 200;
+    private boolean isLong;
+
+    public Transport(String nom, double prixForfaitaire, Boolean isLong) {
+        super(nom, prixForfaitaire);
+        this.isLong = isLong;
+    }
+    public Transport(String nom, double prixForfaitaire) {
+        this(nom, prixForfaitaire, false);
+    }
+    public double prix() {
+        double basePrice;
+        if (isLong) {
+            basePrice = TARIF_LONG;
+        } else {
+            basePrice = TARIF_BASE;
+        }
+        return basePrice + super.prix();
+    }
+}
+
+class Sejour extends OptionVoyage {
+    private int nombreNuit;
+    private double prixNuit;
+
+    public Sejour(String nom, double prixForfaitaire, int nombreNuit, double prixNuit) {
+        super(nom, prixForfaitaire);
+        this.nombreNuit = nombreNuit;
+        this.prixNuit = prixNuit;
+    }
+    public double prix() {
+        return (this.nombreNuit * this.prixNuit) + super.prix();
+    }
+}
+
+class KitVoyage {
+    private ArrayList<OptionVoyage> options;
+    private String depart;
+    private String destination;
+    
+    public KitVoyage(String depart, String destination) {
+        this.depart = depart;
+        this.destination = destination;
+        this.options = new ArrayList<OptionVoyage>();
+    }
+
+    public double prix() {
+        double prix = 0;
+        for (OptionVoyage o : this.options) {
+            prix += o.prix();
+        }
+        return prix;
+    }
+
+    public String toString() {
+        String str = String.format("Voyage de %s à %s, avec pour options :\n", this.depart, this.destination);
+        for (OptionVoyage o : this.options) {
+            str += "   - " + o.toString() + "\n";
+        }
+        str += "Prix total : " + this.prix() + " CHF\n";
+        return str;
+    }
+
+    public void ajouterOption(OptionVoyage option) {
+        if (option != null) {
+            this.options.add(option);
+        }
+    }
+
+    public void annuler() {
+        this.options.clear();
+    }
+
+    public int getNbOptions() { return this.options.size(); }
+}
 /*******************************************
  * Ne pas modifier apres cette ligne
  * pour pr'eserver les fonctionnalit'es et
