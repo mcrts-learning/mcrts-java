@@ -1,5 +1,131 @@
 import java.util.ArrayList;
 
+
+class Position {
+    private double x, y;
+
+    public Position(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
+    public Position() {
+        this(0, 0);
+    }
+
+    public double getX() { return x; }
+    public double getY() { return y; }
+    public String toString() {
+        String str = "(" + getX() + ", " + getY() + ")";
+        return str;
+    }
+}
+
+class Neurone {
+    private Position position;
+    private double signal, facteur;
+    protected ArrayList<Neurone> connexions;
+
+    public Neurone(Position position, double facteur) {
+        this.position = position;
+        this.facteur = facteur;
+        this.signal = 0;
+        this.connexions = new ArrayList<>();
+    }
+    public Position getPosition() { return position; }
+    public int getNbConnexions() { return connexions.size(); }
+    public Neurone getConnexion(int index) { return connexions.get(index); }
+    public double getAttenuation() { return facteur; }
+    public double getSignal() { return signal; }
+
+    public void setSignal(double signal) { this.signal = signal; }
+
+    public void connexion(Neurone n) {
+        connexions.add(n);
+    }
+
+    public void recoitStimulus(double stimulus) {
+        this.setSignal(stimulus * this.getAttenuation());
+        this.envoiStimulus();
+    }
+    public void envoiStimulus() {
+        for (Neurone n: connexions) {
+            n.recoitStimulus(this.getSignal());
+        }
+    }
+
+    public String toString() {
+        String str = "Le neurone en position " + this.getPosition().toString() + " avec attenuation " + this.getAttenuation();
+        if (this.getNbConnexions() > 0) {
+            str += " en connexion avec" + System.lineSeparator();
+            for (Neurone n : connexions) {
+                str += "  - un neurone en position " + n.getPosition().toString() + System.lineSeparator();
+            }
+        } else {
+            str += " sans connexion" + System.lineSeparator();
+        }
+        return str;
+    }
+}
+
+class NeuroneCumulatif extends Neurone {
+
+    public NeuroneCumulatif(Position position, double facteur) {
+        super(position, facteur);
+    }
+
+    public void recoitStimulus(double stimulus) {
+        this.setSignal(this.getSignal() + (stimulus * this.getAttenuation()) );
+        this.envoiStimulus();
+    }
+}
+
+class Cerveau {
+    private ArrayList<Neurone> neurones;
+
+    public Cerveau() {
+        this.neurones = new ArrayList<>();
+    }
+
+    public int getNbNeurones() { return neurones.size(); }
+    public Neurone getNeurone(int index) { return neurones.get(index); }
+    public void ajouterNeurone(Position pos, double attenuation) {
+        neurones.add(new Neurone(pos, attenuation));
+    }
+    public void ajouterNeuroneCumulatif(Position pos, double attenuation) {
+        neurones.add(new NeuroneCumulatif(pos, attenuation));
+    }
+    public void stimuler(int index, double stimulus) {
+        this.getNeurone(index).recoitStimulus(stimulus);
+    }
+    public double sonder(int index) { return this.getNeurone(index).getSignal(); }
+    public void creerConnexions() {
+        if (this.getNbNeurones() >= 2) {
+            this.getNeurone(0).connexion(this.getNeurone(1));
+        }
+        if (this.getNbNeurones() >= 3) {
+            this.getNeurone(0).connexion(this.getNeurone(2));
+        }
+
+        for (int i = 1; i < this.getNbNeurones()-2; i += 2) {
+            this.getNeurone(i).connexion(this.getNeurone(i+1));
+            this.getNeurone(i+1).connexion(this.getNeurone(i+2));
+        }
+    }
+
+    public String toString() {
+        String str = System.lineSeparator();
+        str += "*----------*" + System.lineSeparator() + System.lineSeparator() + System.lineSeparator();
+        str += String.format("Le cerveau contient %d neurone(s)", this.getNbNeurones());
+        for (Neurone n : this.neurones) {
+            str += System.lineSeparator();
+            str += n.toString();
+        }
+        str += System.lineSeparator();
+        str += "*----------*" + System.lineSeparator() + System.lineSeparator();
+        return str;
+    }
+
+}
 /*******************************************
  * Completez le programme a partir d'ici.
  *******************************************/
