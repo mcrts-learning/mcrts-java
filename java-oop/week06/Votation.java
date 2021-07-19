@@ -35,7 +35,7 @@ abstract class Vote {
 
     public int getDate() { return date; }
     public int getDateLimite() { return dateLimite; }
-    public String getNom() { return nom; }
+    public String getPostulant() { return nom; }
 
     abstract public boolean estInvalide();
 
@@ -48,9 +48,9 @@ abstract class Vote {
     public String toString() {
         String str;
         if (this.estInvalide()) {
-            str = String.format(" pour %s -> invalide", this.getNom());
+            str = String.format(" pour %s -> invalide", this.getPostulant());
         } else {
-            str = String.format(" pour %s -> valide", this.getNom());
+            str = String.format(" pour %s -> valide", this.getPostulant());
         }
         return str;
     }
@@ -78,9 +78,9 @@ class BulletinPapier extends Vote {
     public String toString() {
         String str;
         if (this.estInvalide()) {
-            str = String.format("vote par bulletin papier pour %s -> invalide", this.getNom());
+            str = String.format("vote par bulletin papier pour %s -> invalide", this.getPostulant());
         } else {
-            str = String.format("vote par bulletin papier pour %s -> valide", this.getNom());
+            str = String.format("vote par bulletin papier pour %s -> valide", this.getPostulant());
         }
         return str;
     }
@@ -106,9 +106,9 @@ class BulletinCourrier extends BulletinPapier implements CheckBulletin {
     public String toString() {
         String str;
         if (this.estInvalide()) {
-            str = String.format("envoi par courrier d'un vote par bulletin papier pour %s -> invalide", this.getNom());
+            str = String.format("envoi par courrier d'un vote par bulletin papier pour %s -> invalide", this.getPostulant());
         } else {
-            str = String.format("envoi par courrier d'un vote par bulletin papier pour %s -> valide", this.getNom());
+            str = String.format("envoi par courrier d'un vote par bulletin papier pour %s -> valide", this.getPostulant());
         }
         return str;
     }
@@ -133,9 +133,9 @@ class BulletinElectronique extends Vote implements CheckBulletin {
     public String toString() {
         String str;
         if (this.estInvalide()) {
-            str = String.format("vote electronique pour %s -> invalide", this.getNom());
+            str = String.format("vote electronique pour %s -> invalide", this.getPostulant());
         } else {
-            str = String.format("vote electronique pour %s -> valide", this.getNom());
+            str = String.format("vote electronique pour %s -> valide", this.getPostulant());
         }
         return str;
     }
@@ -167,9 +167,12 @@ class Scrutin {
         this.date = date;
         this.votes = new ArrayList<>();
         this.postulants = new ArrayList<>();
-        for (Postulant p : postulants) {
-            this.postulants.add(new Postulant(p));
+        if (postulants != null) {
+            for (Postulant p : postulants) {
+                this.postulants.add(new Postulant(p));
+            }
         }
+
         if (reset) {
             this.resetElection();
         }
@@ -182,7 +185,7 @@ class Scrutin {
     public void compterVotes() {
         for (Vote v : this.votes) {
             if (!v.estInvalide()) {
-                this.incrementerVote(v.getNom());
+                this.incrementerVote(v.getPostulant());
             }
         }
     }
@@ -288,7 +291,7 @@ class Votation {
 
         // 30 -> nombre maximal de votants
         // 15 jour du scrutin
-        Scrutin scrutin = new Scrutin(postulants, 30, 15, false);
+        Scrutin scrutin = new Scrutin(null, 30, 15, false);
 
         scrutin.resultats();
 
