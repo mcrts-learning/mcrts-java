@@ -51,30 +51,30 @@ class Employe {
         double primeMax = this.revenuAnnuel() * 2 / 100;
         System.out.format("Montant de la prime souhaitée par %s ? ", this.nom);
         System.out.println();
-        prime = clavier.nextDouble();
-        if (prime > primeMax) {
+        double bonus = clavier.nextDouble();
+        if (bonus > primeMax) {
             throw new NumberTooHigh("Prime demandé supérieur à " + primeMax);
         }
-        return prime;
+        return bonus;
     }
 
     public void demandePrime() {
         Scanner clavier = new Scanner(System.in);
-        double prime = -1;
+        double bonus = -1;
         for (int i = 0; i < 5; i++) {
             try { 
-                prime = askBonus(clavier);
+                bonus = askBonus(clavier);
                 break;
             } catch (InputMismatchException e) {
                 System.out.println("Vous devez introduire un nombre!");
+                clavier.nextLine();
             } catch (NumberTooHigh e) {
                 System.out.println("Trop cher!");
             } finally {
-                clavier.nextLine();
             }
         }
-        if (prime > 0) {
-            this.prime = prime;
+        if (bonus > 0) {
+            this.prime = bonus;
         }
         clavier.close();
     }
@@ -170,9 +170,6 @@ class Programmeur extends Employe {
         return str;
     }
 }
-/*
-"Montant de la prime souhaitée par "
-*/
 
 /*******************************************
  * Ne rien modifier apres cette ligne.
@@ -185,6 +182,7 @@ class Employes {
         // TEST PARTIE 1:
 
         System.out.println("Test partie 1 : ");
+        staff.add(new Employe("Employé15", 5060.733098, 77));
         staff.add(new Manager("Serge Legrand", 7456, 30, 4 ));
         staff.add(new Programmeur("Paul Lepetit" , 6456, 3, 75 ));
         staff.add(new Testeur("Pierre Lelong", 5456, 124, 50 ));
